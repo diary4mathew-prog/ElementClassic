@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Classic Reminder · !remind scheduler</title>
+  <title>!remind · Command Generator (YYYY-MM-DD)</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, 'Segoe UI', 'Courier New', 'Fira Code', monospace;
+      font-family: system-ui, 'Segoe UI', 'Courier New', monospace;
     }
-
     body {
       background: linear-gradient(145deg, #1e2a2e 0%, #0f1a1f 100%);
       min-height: 100vh;
@@ -20,58 +19,38 @@
       align-items: center;
       padding: 2rem 1rem;
     }
-
-    /* classic app panel */
     .classic-card {
-      max-width: 800px;
+      max-width: 700px;
       width: 100%;
       background: #fef9e8;
-      background-image: radial-gradient(circle at 25% 40%, rgba(210, 180, 140, 0.08) 1.5px, transparent 1.5px);
-      background-size: 28px 28px;
       border-radius: 2rem;
-      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 245, 215, 0.8);
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
       overflow: hidden;
-      transition: all 0.2s ease;
       border: 1px solid #e9d6af;
     }
-
-    /* retro header */
     .retro-header {
       background: #2c2e2b;
       padding: 1rem 1.8rem;
       border-bottom: 4px solid #c9a87b;
       display: flex;
+      justify-content: space-between;
       align-items: baseline;
       flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 0.5rem;
     }
-
     .retro-header h1 {
       font-size: 1.65rem;
-      font-weight: 600;
-      letter-spacing: -0.3px;
       color: #ffe3b3;
-      text-shadow: 2px 2px 0 #5a3e1f;
       font-family: 'Courier New', monospace;
     }
-
     .retro-header code {
       background: #1e1f1c;
       padding: 0.3rem 0.8rem;
       border-radius: 40px;
       color: #f5cb8b;
-      font-weight: bold;
-      font-size: 0.85rem;
-      border: 1px solid #7f6948;
     }
-
-    /* main content */
     .content {
-      padding: 1.8rem 2rem 2rem 2rem;
+      padding: 1.8rem 2rem 2rem;
     }
-
-    /* command preview block */
     .cmd-preview {
       background: #1e2a23;
       border-radius: 1.5rem;
@@ -83,16 +62,13 @@
       flex-wrap: wrap;
       gap: 1rem;
       border-left: 8px solid #d9a13b;
-      font-family: monospace;
     }
-
     .cmd-preview span {
       color: #d9cfb0;
       font-size: 1rem;
-      font-weight: 500;
+      font-family: monospace;
       word-break: break-all;
     }
-
     .cmd-label {
       background: #00000066;
       padding: 0.2rem 0.7rem;
@@ -100,8 +76,6 @@
       font-size: 0.75rem;
       color: #ffda99;
     }
-
-    /* form style */
     .form-grid {
       display: flex;
       flex-wrap: wrap;
@@ -110,164 +84,46 @@
       background: #fff7ea;
       padding: 1.2rem;
       border-radius: 1.5rem;
-      box-shadow: inset 0 1px 3px #0001, 0 4px 8px #0001;
     }
-
     .input-group {
       flex: 1 1 170px;
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
     }
-
     .input-group label {
       font-size: 0.7rem;
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       color: #6a4e2e;
     }
-
     .input-group input, .input-group textarea {
       background: #fffcf0;
       border: 1px solid #ddc9a0;
       border-radius: 60px;
       padding: 0.7rem 1rem;
-      font-size: 0.9rem;
-      font-family: monospace;
-      transition: 0.2s;
-    }
-
-    .input-group textarea {
-      border-radius: 20px;
-      resize: vertical;
       font-family: monospace;
     }
-
-    .input-group input:focus, .input-group textarea:focus {
-      outline: none;
-      border-color: #c9812e;
-      box-shadow: 0 0 0 2px #f5bc7066;
-    }
-
     button {
       background: #2f3e3a;
       border: none;
       padding: 0.6rem 1.4rem;
       border-radius: 60px;
       font-weight: bold;
-      font-family: monospace;
-      font-size: 0.9rem;
       color: #fae7c3;
       cursor: pointer;
-      transition: 0.15s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
-
     button:hover {
       background: #4d6b62;
       transform: scale(0.97);
-      color: white;
     }
-
-    button.primary {
-      background: #b46f2a;
-      color: #fff2e0;
-      box-shadow: 0 3px 0 #61481c;
+    .copy-cmd-btn {
+      background: #5d7b6e;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
     }
-
-    button.primary:hover {
-      background: #cf8a3e;
-      transform: translateY(-1px);
-    }
-
-    .cmd-section {
-      background: #ece2cf;
-      border-radius: 1.5rem;
-      padding: 1.2rem;
-      margin: 1.5rem 0;
-    }
-
-    .flex-btns {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    /* reminder list */
-    .reminder-list {
-      background: #fff5e6;
-      border-radius: 1.5rem;
-      padding: 1rem;
-      margin-top: 1.8rem;
-      border: 1px solid #eadbbe;
-    }
-
-    .reminder-list h3 {
-      font-size: 1.1rem;
-      border-left: 5px solid #cb7b2c;
-      padding-left: 0.8rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
-      color: #2b3b33;
-    }
-
-    .reminders-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      max-height: 280px;
-      overflow-y: auto;
-    }
-
-    .reminder-item {
-      background: #ffffffdb;
-      backdrop-filter: blur(2px);
-      border-radius: 1rem;
-      padding: 0.7rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      border-left: 5px solid #c9812e;
-    }
-
-    .reminder-info {
-      font-family: monospace;
-      font-size: 0.85rem;
-      flex: 3;
-    }
-
-    .reminder-info strong {
-      color: #b45f1b;
-    }
-
-    .reminder-msg {
-      font-weight: 500;
-      background: #f4e9db;
-      padding: 0.2rem 0.5rem;
-      border-radius: 20px;
-    }
-
-    .cancel-btn {
-      background: #a55117;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      color: white;
-      box-shadow: none;
-    }
-
-    .cancel-btn:hover {
-      background: #7a3a0e;
-    }
-
     .status-msg {
       background: #e6dac8;
       border-radius: 60px;
@@ -277,20 +133,6 @@
       text-align: center;
       color: #2a473b;
     }
-
-    hr {
-      margin: 1rem 0;
-      border-color: #e2cfaa;
-    }
-
-    .badge {
-      background: #332211;
-      color: #ffdeae;
-      border-radius: 18px;
-      padding: 0.1rem 0.5rem;
-      font-size: 0.7rem;
-    }
-
     footer {
       font-size: 0.7rem;
       text-align: center;
@@ -301,421 +143,119 @@
   </style>
 </head>
 <body>
-
 <div class="classic-card">
   <div class="retro-header">
-    <h1>📟 CLASSIC REMINDER · `!remind`</h1>
-    <code>DD-MM-YYYY  HH:MM</code>
+    <h1>📟 !remind · YYYY-MM-DD</h1>
+    <code>copies as yyyy-mm-dd</code>
   </div>
-
   <div class="content">
-    <!-- live command preview (syntax) -->
     <div class="cmd-preview">
-      <span class="cmd-label">⚡ CURRENT SYNTAX</span>
-      <span id="liveCommandPreview">!remind 05-06-2026 10:00 test</span>
+      <span class="cmd-label">⚡ COPY THIS COMMAND</span>
+      <span id="liveCommandPreview">!remind 2026-06-05 10:00 meeting</span>
+      <button id="copyLiveCommandBtn" class="copy-cmd-btn">📋 Copy</button>
     </div>
 
-    <!-- FORM: manual DD-MM-YYYY + time -->
     <div class="form-grid">
       <div class="input-group">
         <label>📅 DATE (dd-mm-yyyy)</label>
-        <input type="text" id="remindDate" placeholder="25-12-2026" value="25-12-2026">
+        <input type="text" id="remindDate" placeholder="dd-mm-yyyy">
       </div>
       <div class="input-group">
-        <label>⏰ TIME (hh:mm) 24h</label>
-        <input type="text" id="remindTime" placeholder="14:30" value="14:30">
+        <label>⏰ TIME (hh:mm)</label>
+        <input type="text" id="remindTime" placeholder="10:00" value="10:00">
       </div>
       <div class="input-group">
         <label>💬 MESSAGE</label>
-        <textarea id="remindMsg" rows="1" placeholder="Meeting with team...">🎄 Christmas sync</textarea>
-      </div>
-      <div class="input-group" style="justify-content: flex-end;">
-        <button id="scheduleFromFormBtn" class="primary">📌 SCHEDULE REMINDER</button>
+        <textarea id="remindMsg" rows="1">meeting</textarea>
       </div>
     </div>
 
-    <!-- COMMAND LINE style: full !remind syntax -->
-    <div class="cmd-section">
-      <label style="font-weight: bold; display: block; margin-bottom: 8px;">⌨️ RAW COMMAND ( !remind dd-mm-yyyy hh:mm message )</label>
-      <input type="text" id="rawCommandInput" style="width: 100%; padding: 12px; border-radius: 60px; border: 1px solid #cbad7a; background: #fffff0; font-family: monospace;" 
-             placeholder="!remind 05-07-2027 09:15 Dentist appointment" value="!remind 05-07-2027 09:15 Dentist appointment">
-      <div class="flex-btns">
-        <button id="parseAndScheduleCmd">🔮 PARSE & SCHEDULE</button>
-        <button id="clearAllReminders" style="background:#5a3e2b;">🗑️ CLEAR ALL</button>
-      </div>
-    </div>
-
-    <!-- upcoming reminders list -->
-    <div class="reminder-list">
-      <h3>⏳ UPCOMING ALERTS <span class="badge" id="reminderCount">0</span></h3>
-      <div id="remindersList" class="reminders-container">
-        <div style="color:#9b7b5a; text-align:center; padding:1rem;">No reminders scheduled yet.<br>Use the form or !remind command</div>
-      </div>
-    </div>
-    <div id="statusMessage" class="status-msg">✅ Ready · Notifications will popup or alert at exact time</div>
+    <div id="statusMessage" class="status-msg">✅ Default = today's date · you can edit freely</div>
   </div>
-  <footer>
-    🕰️ classic alert engine · supports DD-MM-YYYY & HH:MM · local timezone · permission for browser notifications
-  </footer>
+  <footer>Copy the command and paste into your classic app · no auto‑reset</footer>
 </div>
 
 <script>
-  // ---------- GLOBALS ----------
-  let reminders = [];       // each: { id, message, targetDate, formattedTimeStr }
-  let checkInterval = null;
-  let notificationPermissionGranted = false;
-
-  // DOM elements
   const dateInput = document.getElementById('remindDate');
   const timeInput = document.getElementById('remindTime');
   const msgInput = document.getElementById('remindMsg');
   const liveCmdSpan = document.getElementById('liveCommandPreview');
-  const remindersContainer = document.getElementById('remindersList');
-  const reminderCountSpan = document.getElementById('reminderCount');
+  const copyBtn = document.getElementById('copyLiveCommandBtn');
   const statusDiv = document.getElementById('statusMessage');
-  const rawCmdInput = document.getElementById('rawCommandInput');
-  const scheduleFormBtn = document.getElementById('scheduleFromFormBtn');
-  const parseCmdBtn = document.getElementById('parseAndScheduleCmd');
-  const clearAllBtn = document.getElementById('clearAllReminders');
 
-  // helper: show status (auto clear after 3s but keep last)
-  let statusTimeout = null;
-  function setStatusMsg(msg, isError = false) {
-    if (statusTimeout) clearTimeout(statusTimeout);
-    statusDiv.style.background = isError ? '#ffded5' : '#e6dac8';
-    statusDiv.style.color = isError ? '#9b3c1a' : '#2a473b';
-    statusDiv.innerHTML = `📢 ${msg}`;
-    statusTimeout = setTimeout(() => {
-      if (statusDiv) statusDiv.style.background = '#e6dac8';
-      statusDiv.style.color = '#2a473b';
-      if (!isError) statusDiv.innerHTML = `✓ Ready · ${reminders.length} reminder(s) active`;
-      else statusDiv.innerHTML = `⚠️ ${msg} — fix and retry`;
-    }, 3200);
+  function pad(n) {
+    return n.toString().padStart(2, '0');
   }
 
-  // request notification permission on user interaction (first schedule or load soft)
-  function requestNotificationPerm() {
-    if (!("Notification" in window)) {
-      console.log("Browser does not support notifications");
-      return false;
-    }
-    if (Notification.permission === "granted") {
-      notificationPermissionGranted = true;
-      return true;
-    } else if (Notification.permission !== "denied") {
-      Notification.requestPermission().then(perm => {
-        if (perm === "granted") notificationPermissionGranted = true;
-      });
-    }
-    return false;
+  // set initial default date (today) WITHOUT overriding user edits later
+  function setInitialDate() {
+    const today = new Date();
+    const day = pad(today.getDate());
+    const month = pad(today.getMonth() + 1);
+    const year = today.getFullYear();
+    dateInput.value = `${day}-${month}-${year}`;
   }
 
-  // trigger alert (notification or classic alert)
-  function triggerReminderAlert(message, targetDateTime) {
-    const formattedTime = targetDateTime.toLocaleString();
-    const alertText = `🔔 REMINDER!\n📌 "${message}"\n⏰ Scheduled: ${formattedTime}`;
-    
-    // try modern notification if allowed
-    if (notificationPermissionGranted && "Notification" in window && Notification.permission === "granted") {
-      new Notification("Classic Reminder Alert", {
-        body: message,
-        tag: "reminder_" + Date.now(),
-        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b46f2a'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 13c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z'/%3E%3C/svg%3E"
-      });
-    } else {
-      // classic alert fallback (retro style)
-      alert(alertText);
-    }
-    setStatusMsg(`🔔 Alert triggered: "${message}"`, false);
-  }
-
-  // render reminders list from array
-  function renderReminders() {
-    if (!remindersContainer) return;
-    if (reminders.length === 0) {
-      remindersContainer.innerHTML = `<div style="color:#9b7b5a; text-align:center; padding:1rem;">✨ No reminders scheduled. Add using !remind or form ✨</div>`;
-      reminderCountSpan.innerText = '0';
-      return;
-    }
-    reminderCountSpan.innerText = reminders.length;
-    const fragment = document.createDocumentFragment();
-    reminders.forEach(rem => {
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'reminder-item';
-      const targetTimeStr = rem.targetDate.toLocaleString();
-      itemDiv.innerHTML = `
-        <div class="reminder-info">
-          <strong>📅 ${rem.formattedTimeStr}</strong><br>
-          <span class="reminder-msg">💬 ${escapeHtml(rem.message)}</span>
-          <span style="font-size:0.7rem; color:#6f4e2e;"> (${targetTimeStr})</span>
-        </div>
-        <button class="cancel-btn" data-id="${rem.id}">✖ cancel</button>
-      `;
-      fragment.appendChild(itemDiv);
-    });
-    remindersContainer.innerHTML = '';
-    remindersContainer.appendChild(fragment);
-    
-    // attach cancel event
-    document.querySelectorAll('.cancel-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = Number(btn.getAttribute('data-id'));
-        cancelReminderById(id);
-      });
-    });
-  }
-
-  function cancelReminderById(id) {
-    const beforeLen = reminders.length;
-    reminders = reminders.filter(rem => rem.id !== id);
-    if (reminders.length !== beforeLen) {
-      renderReminders();
-      setStatusMsg(`Reminder cancelled. ${reminders.length} left.`, false);
-    } else {
-      setStatusMsg("Reminder not found", true);
-    }
-  }
-
-  function clearAllReminders() {
-    if (reminders.length > 0) {
-      reminders = [];
-      renderReminders();
-      setStatusMsg("All scheduled reminders cleared.", false);
-    } else {
-      setStatusMsg("No active reminders to clear.", false);
-    }
-  }
-
-  // helper: parse DD-MM-YYYY to Date (local midnight)
-  function parseDateDDMMYYYY(dateStr) {
+  // convert DD-MM-YYYY to YYYY-MM-DD (only if valid)
+  function convertToYMD(dateStr) {
     const parts = dateStr.split('-');
-    if (parts.length !== 3) return null;
-    let day = parseInt(parts[0], 10);
-    let month = parseInt(parts[1], 10);
-    let year = parseInt(parts[2], 10);
-    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
-    if (month < 1 || month > 12) return null;
-    const maxDays = new Date(year, month, 0).getDate();
-    if (day < 1 || day > maxDays) return null;
-    // return date object at 00:00 local
-    return new Date(year, month-1, day, 0, 0, 0);
-  }
-
-  // combine date (from DD-MM-YYYY) and time (HH:MM) to full Date object
-  function combineDateTimeToDate(dateStr, timeStr) {
-    const baseDate = parseDateDDMMYYYY(dateStr);
-    if (!baseDate) return null;
-    const timeParts = timeStr.split(':');
-    if (timeParts.length !== 2) return null;
-    let hour = parseInt(timeParts[0], 10);
-    let minute = parseInt(timeParts[1], 10);
-    if (isNaN(hour) || isNaN(minute)) return null;
-    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
-    const finalDate = new Date(baseDate);
-    finalDate.setHours(hour, minute, 0, 0);
-    return finalDate;
-  }
-
-  // add new reminder (core)
-  function addReminder(message, targetDateTime) {
-    if (!(targetDateTime instanceof Date) || isNaN(targetDateTime.getTime())) {
-      setStatusMsg("Invalid date/time object", true);
-      return false;
+    if (parts.length !== 3) return dateStr;
+    let [day, month, year] = parts;
+    // basic validation: day/month should be numbers
+    if (isNaN(parseInt(day)) || isNaN(parseInt(month)) || isNaN(parseInt(year))) {
+      return dateStr; // keep as is
     }
-    const now = new Date();
-    if (targetDateTime <= now) {
-      setStatusMsg("Cannot schedule reminder in the past! Choose future date/time.", true);
-      return false;
-    }
-    // check duplicate? not necessary but ok
-    const id = Date.now() + Math.floor(Math.random() * 10000);
-    const formattedTimeStr = `${targetDateTime.getDate().toString().padStart(2,'0')}-${(targetDateTime.getMonth()+1).toString().padStart(2,'0')}-${targetDateTime.getFullYear()} ${targetDateTime.getHours().toString().padStart(2,'0')}:${targetDateTime.getMinutes().toString().padStart(2,'0')}`;
-    reminders.push({
-      id: id,
-      message: message.trim(),
-      targetDate: targetDateTime,
-      formattedTimeStr: formattedTimeStr
-    });
-    renderReminders();
-    setStatusMsg(`✅ Reminder set: "${message}" at ${formattedTimeStr}`, false);
-    // request permission softly on first schedule
-    requestNotificationPerm();
-    return true;
+    day = pad(parseInt(day));
+    month = pad(parseInt(month));
+    year = parseInt(year);
+    if (year < 1000 || year > 9999) return dateStr;
+    return `${year}-${month}-${day}`;
   }
 
-  // schedule from form fields
-  function scheduleFromForm() {
+  function updateCommandPreview() {
     let dateVal = dateInput.value.trim();
     let timeVal = timeInput.value.trim();
     let msgVal = msgInput.value.trim();
-    if (!dateVal || !timeVal) {
-      setStatusMsg("Please fill date (DD-MM-YYYY) and time (HH:MM)", true);
-      return;
+
+    // If date is empty, use placeholder
+    if (dateVal === "") dateVal = "dd-mm-yyyy";
+    // If time is empty, use placeholder
+    if (timeVal === "") timeVal = "hh:mm";
+    if (msgVal === "") msgVal = "message";
+
+    // Try to convert to YYYY-MM-DD only if it looks like DD-MM-YYYY
+    let ymdDate = dateVal;
+    if (/^\d{2}-\d{2}-\d{4}$/.test(dateVal)) {
+      ymdDate = convertToYMD(dateVal);
     }
-    if (!msgVal) {
-      setStatusMsg("Please enter reminder message", true);
-      return;
-    }
-    // regex quick validation
-    const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/;
-    if (!dateRegex.test(dateVal)) {
-      setStatusMsg("Date must be in DD-MM-YYYY format (e.g., 31-12-2026)", true);
-      return;
-    }
-    const timeRegex = /^([01]?\d|2[0-3]):([0-5]\d)$/;
-    if (!timeRegex.test(timeVal)) {
-      setStatusMsg("Time must be HH:MM (00:00 to 23:59)", true);
-      return;
-    }
-    const targetDate = combineDateTimeToDate(dateVal, timeVal);
-    if (!targetDate) {
-      setStatusMsg("Invalid date or time (check day-month-year validity)", true);
-      return;
-    }
-    addReminder(msgVal, targetDate);
+    const command = `!remind ${ymdDate} ${timeVal} ${msgVal.substring(0, 60)}`;
+    liveCmdSpan.innerText = command;
   }
 
-  // update live command preview based on form fields
-  function updateLivePreview() {
-    let datePreview = dateInput.value.trim() || "DD-MM-YYYY";
-    let timePreview = timeInput.value.trim() || "HH:MM";
-    let msgPreview = msgInput.value.trim() || "message";
-    if (!datePreview.match(/^\d{2}-\d{2}-\d{4}$/)) datePreview = "05-06-2026";
-    if (!timePreview.match(/^([01]?\d|2[0-3]):[0-5]\d$/)) timePreview = "10:00";
-    liveCmdSpan.innerText = `!remind ${datePreview} ${timePreview} ${msgPreview.substring(0, 45)}`;
-  }
-
-  // COMMAND PARSER: accepts "!remind DD-MM-YYYY HH:MM message_text"
-  function parseRemindCommand(rawCmd) {
-    rawCmd = rawCmd.trim();
-    if (!rawCmd.toLowerCase().startsWith('!remind')) {
-      return { error: 'Command must start with "!remind"' };
-    }
-    const withoutCmd = rawCmd.slice(8).trim(); // after "!remind"
-    // split at first space for date, then time, rest message
-    const firstSpace = withoutCmd.indexOf(' ');
-    if (firstSpace === -1) return { error: 'Missing date and time' };
-    const datePart = withoutCmd.slice(0, firstSpace).trim();
-    const afterDate = withoutCmd.slice(firstSpace + 1).trim();
-    const secondSpace = afterDate.indexOf(' ');
-    if (secondSpace === -1) return { error: 'Missing time or message' };
-    const timePart = afterDate.slice(0, secondSpace).trim();
-    const messagePart = afterDate.slice(secondSpace + 1).trim();
-    if (!datePart || !timePart || !messagePart) {
-      return { error: 'Invalid format. Use: !remind DD-MM-YYYY HH:MM your message' };
-    }
-    // validate date DD-MM-YYYY
-    const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/;
-    if (!dateRegex.test(datePart)) {
-      return { error: 'Date must be DD-MM-YYYY (e.g., 25-12-2026)' };
-    }
-    const timeRegex = /^([01]?\d|2[0-3]):([0-5]\d)$/;
-    if (!timeRegex.test(timePart)) {
-      return { error: 'Time must be HH:MM (24h format)' };
-    }
-    const targetDateTime = combineDateTimeToDate(datePart, timePart);
-    if (!targetDateTime) {
-      return { error: 'Invalid date (e.g., 31-02-2025) or time values' };
-    }
-    return { success: true, dateTime: targetDateTime, message: messagePart, rawDate: datePart, rawTime: timePart };
-  }
-
-  function scheduleFromCommandLine() {
-    let rawText = rawCmdInput.value.trim();
-    if (!rawText) {
-      setStatusMsg("Empty command! Write like: !remind 15-08-2027 09:30 Buy coffee", true);
-      return;
-    }
-    const parsed = parseRemindCommand(rawText);
-    if (parsed.error) {
-      setStatusMsg(`❌ Parse error: ${parsed.error}`, true);
-      return;
-    }
-    if (parsed.success) {
-      addReminder(parsed.message, parsed.dateTime);
-      // optionally update form fields to reflect? Nice UX
-      if (parsed.rawDate) dateInput.value = parsed.rawDate;
-      if (parsed.rawTime) timeInput.value = parsed.rawTime;
-      msgInput.value = parsed.message;
-      updateLivePreview();
-    }
-  }
-
-  // ---------- CHECK DUE REMINDERS (every second) ----------
-  function checkDueReminders() {
-    if (!reminders.length) return;
-    const now = new Date();
-    let triggeredIds = [];
-    for (let i = 0; i < reminders.length; i++) {
-      const rem = reminders[i];
-      if (rem.targetDate <= now) {
-        // trigger alert
-        triggerReminderAlert(rem.message, rem.targetDate);
-        triggeredIds.push(rem.id);
-      }
-    }
-    if (triggeredIds.length > 0) {
-      reminders = reminders.filter(rem => !triggeredIds.includes(rem.id));
-      renderReminders();
-      if (triggeredIds.length > 0) {
-        setStatusMsg(`🔔 ${triggeredIds.length} reminder(s) triggered and removed.`, false);
-      }
-    }
-  }
-
-  // event listeners + initialize
-  function init() {
-    // schedule interval
-    if (checkInterval) clearInterval(checkInterval);
-    checkInterval = setInterval(checkDueReminders, 1000);
-    
-    scheduleFormBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      scheduleFromForm();
-    });
-    
-    parseCmdBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      scheduleFromCommandLine();
-    });
-    
-    clearAllBtn.addEventListener('click', () => {
-      clearAllReminders();
-    });
-    
-    dateInput.addEventListener('input', updateLivePreview);
-    timeInput.addEventListener('input', updateLivePreview);
-    msgInput.addEventListener('input', updateLivePreview);
-    
-    updateLivePreview();
-    
-    // example default: add a demo reminder only if empty? but not required, but adds showcase
-    // optionally set a future reminder example for demonstration? we skip to avoid spam, but add friendly example to command input
-    setStatusMsg("Ready! Use DD-MM-YYYY & HH:MM. Alerts pop at exact time.", false);
-    requestNotificationPerm();
-    
-    // add sample reminder in future for fun? but skip to avoid cluttering, but we add one only if reminders empty? optional
-    // but it's classic - let's not add auto to keep clean.
-    // however, example demo fill:
-    const futureCheck = new Date();
-    futureCheck.setMinutes(futureCheck.getMinutes() + 2);
-    if (reminders.length === 0 && false) {} // not adding automatic, but user can test.
-  }
-  
-  // helper escapeHtml
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-      return c;
+  function copyCommand() {
+    const command = liveCmdSpan.innerText;
+    navigator.clipboard.writeText(command).then(() => {
+      statusDiv.innerHTML = "✅ Copied! (YYYY-MM-DD format)";
+      statusDiv.style.background = "#cde5d0";
+      setTimeout(() => {
+        statusDiv.style.background = "#e6dac8";
+        statusDiv.innerHTML = "✅ Ready · edit any field freely";
+      }, 2000);
+    }).catch(() => {
+      statusDiv.innerHTML = "❌ Copy failed. Select manually.";
+      statusDiv.style.background = "#ffded5";
     });
   }
-  
-  init();
+
+  // Set initial date only once
+  setInitialDate();
+  updateCommandPreview();
+
+  // Event listeners: update preview on any change (no reset)
+  dateInput.addEventListener('input', updateCommandPreview);
+  timeInput.addEventListener('input', updateCommandPreview);
+  msgInput.addEventListener('input', updateCommandPreview);
+  copyBtn.addEventListener('click', copyCommand);
 </script>
 </body>
 </html>
