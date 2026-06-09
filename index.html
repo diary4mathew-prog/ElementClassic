@@ -1,366 +1,150 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>!remind · Elegant Command Builder</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: radial-gradient(circle at 10% 30%, #0b2b26, #05100e);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem 1rem;
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Courier New', monospace;
-    }
-
-    /* glassmorphic card */
-    .glass-card {
-      max-width: 800px;
-      width: 100%;
-      background: rgba(30, 35, 32, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 3rem;
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 215, 150, 0.25);
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    /* header with gradient */
-    .glow-header {
-      background: linear-gradient(135deg, #1f2c28 0%, #0f1916 100%);
-      padding: 1.2rem 2rem;
-      border-bottom: 2px solid #e2b87a;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-    }
-
-    .glow-header h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      background: linear-gradient(120deg, #ffe6c7, #ffcd94);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 3px rgba(0,0,0,0.2);
-    }
-
-    .badge-format {
-      background: #00000055;
-      backdrop-filter: blur(4px);
-      padding: 0.4rem 1rem;
-      border-radius: 60px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #ffdeae;
-      border: 1px solid #e2b87a60;
-      font-family: monospace;
-    }
-
-    .content {
-      padding: 2rem 2rem 2rem 2rem;
-    }
-
-    /* command preview block - neon glow */
-    .cmd-preview {
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(8px);
-      border-radius: 2rem;
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 2.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      border: 1px solid rgba(230, 190, 110, 0.5);
-      box-shadow: 0 8px 20px -8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,240,0.1);
-      transition: all 0.2s;
-    }
-
-    .cmd-preview:hover {
-      border-color: #e6b45e;
-      box-shadow: 0 10px 25px -8px #00000066;
-    }
-
-    .cmd-label {
-      background: #d9a13b30;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      color: #f5cd94;
-      border: 1px solid #e2b87a70;
-    }
-
-    .command-text {
-      color: #fae7b3;
-      font-size: 1.05rem;
-      font-family: 'Fira Code', 'Courier New', monospace;
-      font-weight: 500;
-      word-break: break-all;
-      background: #00000030;
-      padding: 0.4rem 1rem;
-      border-radius: 60px;
-      flex: 1;
-    }
-
-    /* enhanced rotary form panel */
-    .rotary-panel {
-      background: rgba(255, 248, 235, 0.9);
-      border-radius: 2rem;
-      padding: 1.5rem;
-      margin-bottom: 1.8rem;
-      box-shadow: 0 12px 28px -12px rgba(0,0,0,0.3);
-      transition: all 0.2s;
-    }
-
-    .form-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: flex-end;
-    }
-
-    .input-group {
-      flex: 1 1 180px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .input-group label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #5a3a1a;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .input-group label i {
-      font-size: 1rem;
-    }
-
-    /* modern inputs with focus glow */
-    .input-group input, .input-group textarea {
-      background: #ffffff;
-      border: 2px solid #e5d5b3;
-      border-radius: 60px;
-      padding: 0.75rem 1rem;
-      font-family: 'Inter', monospace;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-      outline: none;
-      color: #2c2b26;
-      font-weight: 500;
-    }
-
-    input[type="date"], input[type="time"] {
-      cursor: pointer;
-      background-color: #fffef7;
-    }
-
-    .input-group textarea {
-      border-radius: 24px;
-      resize: vertical;
-    }
-
-    .input-group input:focus, .input-group textarea:focus {
-      border-color: #c9812e;
-      box-shadow: 0 0 0 3px rgba(201, 129, 46, 0.3);
-    }
-
-    /* refined buttons */
-    button {
-      background: linear-gradient(145deg, #2f423d, #1f2e2a);
-      border: none;
-      padding: 0.7rem 1.8rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-family: 'Inter', monospace;
-      font-size: 0.9rem;
-      color: #fff2df;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    button:hover {
-      background: linear-gradient(145deg, #3f5c55, #2b403b);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 18px -6px black;
-    }
-
-    button:active {
-      transform: translateY(1px);
-    }
-
-    .copy-cmd-btn {
-      background: linear-gradient(145deg, #b46f2a, #8b551f);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .copy-cmd-btn:hover {
-      background: linear-gradient(145deg, #cf883d, #a46328);
-    }
-
-    /* status message */
-    .status-msg {
-      background: rgba(30, 35, 28, 0.7);
-      backdrop-filter: blur(8px);
-      border-radius: 60px;
-      padding: 0.7rem 1.2rem;
-      font-size: 0.8rem;
-      margin-top: 1.5rem;
-      text-align: center;
-      color: #f0e2ca;
-      border: 1px solid #cfaa6e60;
-      font-weight: 450;
-    }
-
-    footer {
-      font-size: 0.7rem;
-      text-align: center;
-      padding: 1rem;
-      color: #cdb386;
-      border-top: 1px solid #cab07430;
-      background: #0f1613c0;
-      backdrop-filter: blur(4px);
-    }
-
-    /* subtle animation for copy feedback */
-    @keyframes gentlePulse {
-      0% { opacity: 0.7; transform: scale(1);}
-      50% { opacity: 1; transform: scale(1.01); background: #477a68; }
-      100% { opacity: 0.7; transform: scale(1);}
-    }
-    .copied-flash {
-      animation: gentlePulse 0.4s ease;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remind Studio Pro</title>
+<style>
+:root{
+  --bg1:#071814;
+  --bg2:#0f2f28;
+  --gold:#f0c27b;
+  --glass:rgba(255,255,255,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  font-family:Inter,system-ui,sans-serif;
+  background:
+  radial-gradient(circle at top left,#18453b 0%,transparent 35%),
+  radial-gradient(circle at bottom right,#5b3a12 0%,transparent 30%),
+  linear-gradient(135deg,var(--bg1),var(--bg2));
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+.card{
+  width:min(920px,100%);
+  background:rgba(20,20,20,.45);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(240,194,123,.25);
+  border-radius:32px;
+  overflow:hidden;
+  box-shadow:0 25px 60px rgba(0,0,0,.45);
+}
+.header{
+  padding:24px 30px;
+  background:linear-gradient(90deg,rgba(240,194,123,.12),transparent);
+  border-bottom:1px solid rgba(240,194,123,.2);
+}
+h1{
+  color:white;
+  font-size:2rem;
+}
+.sub{color:#d7c7a8;margin-top:6px}
+.content{padding:30px}
+.preview{
+  background:var(--glass);
+  border:1px solid rgba(240,194,123,.25);
+  border-radius:24px;
+  padding:20px;
+  margin-bottom:24px;
+}
+.command{
+  color:#ffe6b8;
+  font-family:Consolas,monospace;
+  font-size:1.1rem;
+  word-break:break-word;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+.box{
+  background:rgba(255,255,255,.06);
+  border-radius:22px;
+  padding:18px;
+}
+label{
+  color:#f0c27b;
+  display:block;
+  margin-bottom:8px;
+  font-size:.8rem;
+  letter-spacing:1px;
+}
+input,textarea{
+  width:100%;
+  border:none;
+  border-radius:14px;
+  padding:12px;
+  font-size:1rem;
+}
+button{
+  margin-top:20px;
+  border:none;
+  border-radius:18px;
+  padding:14px 22px;
+  background:linear-gradient(135deg,#f0c27b,#c79a55);
+  font-weight:bold;
+  cursor:pointer;
+}
+.status{margin-top:16px;color:#ddd}
+</style>
 </head>
 <body>
-<div class="glass-card">
-  <div class="glow-header">
-    <h1>📟 !remind · Rotary Studio</h1>
-    <span class="badge-format">YYYY-MM-DD  HH:MM</span>
-  </div>
+<div class="card">
+<div class="header">
+<h1>✨ Remind Studio Pro</h1>
+<div class="sub">Premium glassmorphism • cleaner layout • mobile friendly</div>
+</div>
+<div class="content">
+<div class="preview">
+<div class="command" id="cmd">!remind 2026-06-09 10:00 team sync</div>
+</div>
 
-  <div class="content">
-    <!-- command preview block -->
-    <div class="cmd-preview">
-      <span class="cmd-label">⚡ READY TO COPY</span>
-      <span class="command-text" id="liveCommandPreview">!remind 2026-06-09 10:00 meeting</span>
-      <button id="copyLiveCommandBtn" class="copy-cmd-btn">📋 Copy command</button>
-    </div>
+<div class="grid">
+<div class="box">
+<label>Date</label>
+<input type="date" id="d">
+</div>
+<div class="box">
+<label>Time</label>
+<input type="time" id="t">
+</div>
+<div class="box">
+<label>Message</label>
+<textarea id="m">team sync</textarea>
+</div>
+</div>
 
-    <!-- rotary input panel -->
-    <div class="rotary-panel">
-      <div class="form-grid">
-        <div class="input-group">
-          <label>📅 DATE <span style="font-size:0.6rem;">(rotary)</span></label>
-          <input type="date" id="remindDate">
-        </div>
-        <div class="input-group">
-          <label>⏰ TIME <span style="font-size:0.6rem;">(rotary)</span></label>
-          <input type="time" id="remindTime" step="60">
-        </div>
-        <div class="input-group">
-          <label>💬 MESSAGE</label>
-          <textarea id="remindMsg" rows="1" placeholder="e.g., sync call, doctor, meeting ...">team sync</textarea>
-        </div>
-      </div>
-    </div>
-
-    <div id="statusMessage" class="status-msg">
-      ✨ Use the rotary date/time wheels · command auto-updates · click copy
-    </div>
-  </div>
-  <footer>
-    🕹️ Built‑in rotary pickers | command format: !remind YYYY-MM-DD HH:MM message
-  </footer>
+<button onclick="copyCmd()">Copy Command</button>
+<div class="status" id="s">Ready</div>
+</div>
 </div>
 
 <script>
-  const datePicker = document.getElementById('remindDate');
-  const timePicker = document.getElementById('remindTime');
-  const msgInput = document.getElementById('remindMsg');
-  const liveCmdSpan = document.getElementById('liveCommandPreview');
-  const copyBtn = document.getElementById('copyLiveCommandBtn');
-  const statusDiv = document.getElementById('statusMessage');
+const d=document.getElementById('d');
+const t=document.getElementById('t');
+const m=document.getElementById('m');
+const cmd=document.getElementById('cmd');
 
-  // set default: today's date, time 10:00
-  function setInitialValues() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    datePicker.value = `${year}-${month}-${day}`;
-    timePicker.value = "10:00";
-  }
+function init(){
+ let now=new Date();
+ d.value=now.toISOString().slice(0,10);
+ t.value='10:00';
+ update();
+}
+function update(){
+ cmd.textContent=`!remind ${d.value||'YYYY-MM-DD'} ${t.value||'HH:MM'} ${m.value||'reminder'}`;
+}
+[d,t,m].forEach(x=>x.addEventListener('input',update));
 
-  function updateCommandPreview() {
-    let dateVal = datePicker.value;
-    let timeVal = timePicker.value;
-    let msgVal = msgInput.value.trim();
-
-    if (!dateVal) dateVal = "YYYY-MM-DD";
-    if (!timeVal) timeVal = "HH:MM";
-    if (msgVal === "") msgVal = "reminder";
-
-    const command = `!remind ${dateVal} ${timeVal} ${msgVal.substring(0, 70)}`;
-    liveCmdSpan.innerText = command;
-  }
-
-  function copyCommand() {
-    const command = liveCmdSpan.innerText;
-    navigator.clipboard.writeText(command).then(() => {
-      statusDiv.innerHTML = "✅ Copied to clipboard! (YYYY-MM-DD format)";
-      statusDiv.style.background = "#2c4b3ecc";
-      statusDiv.style.transition = "0.2s";
-      // add flash effect on button
-      copyBtn.classList.add('copied-flash');
-      setTimeout(() => {
-        statusDiv.style.background = "rgba(30, 35, 28, 0.7)";
-        statusDiv.innerHTML = "✨ Use the rotary wheels · command ready to copy";
-        copyBtn.classList.remove('copied-flash');
-      }, 2200);
-    }).catch(() => {
-      statusDiv.innerHTML = "❌ Copy failed — select and copy manually";
-      statusDiv.style.background = "#9b3c1acc";
-      setTimeout(() => {
-        statusDiv.style.background = "rgba(30, 35, 28, 0.7)";
-        statusDiv.innerHTML = "✨ Use the rotary wheels · command ready to copy";
-      }, 2000);
-    });
-  }
-
-  setInitialValues();
-  updateCommandPreview();
-
-  datePicker.addEventListener('input', updateCommandPreview);
-  timePicker.addEventListener('input', updateCommandPreview);
-  msgInput.addEventListener('input', updateCommandPreview);
-  copyBtn.addEventListener('click', copyCommand);
+function copyCmd(){
+ navigator.clipboard.writeText(cmd.textContent);
+ document.getElementById('s').textContent='✅ Command copied';
+}
+init();
 </script>
 </body>
 </html>
