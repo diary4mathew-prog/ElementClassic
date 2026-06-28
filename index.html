@@ -1,150 +1,467 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Remind Studio Pro</title>
-<style>
-:root{
-  --bg1:#071814;
-  --bg2:#0f2f28;
-  --gold:#f0c27b;
-  --glass:rgba(255,255,255,.08);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;
-  font-family:Inter,system-ui,sans-serif;
-  background:
-  radial-gradient(circle at top left,#18453b 0%,transparent 35%),
-  radial-gradient(circle at bottom right,#5b3a12 0%,transparent 30%),
-  linear-gradient(135deg,var(--bg1),var(--bg2));
-  display:flex;align-items:center;justify-content:center;
-  padding:24px;
-}
-.card{
-  width:min(920px,100%);
-  background:rgba(20,20,20,.45);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(240,194,123,.25);
-  border-radius:32px;
-  overflow:hidden;
-  box-shadow:0 25px 60px rgba(0,0,0,.45);
-}
-.header{
-  padding:24px 30px;
-  background:linear-gradient(90deg,rgba(240,194,123,.12),transparent);
-  border-bottom:1px solid rgba(240,194,123,.2);
-}
-h1{
-  color:white;
-  font-size:2rem;
-}
-.sub{color:#d7c7a8;margin-top:6px}
-.content{padding:30px}
-.preview{
-  background:var(--glass);
-  border:1px solid rgba(240,194,123,.25);
-  border-radius:24px;
-  padding:20px;
-  margin-bottom:24px;
-}
-.command{
-  color:#ffe6b8;
-  font-family:Consolas,monospace;
-  font-size:1.1rem;
-  word-break:break-word;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-}
-.box{
-  background:rgba(255,255,255,.06);
-  border-radius:22px;
-  padding:18px;
-}
-label{
-  color:#f0c27b;
-  display:block;
-  margin-bottom:8px;
-  font-size:.8rem;
-  letter-spacing:1px;
-}
-input,textarea{
-  width:100%;
-  border:none;
-  border-radius:14px;
-  padding:12px;
-  font-size:1rem;
-}
-button{
-  margin-top:20px;
-  border:none;
-  border-radius:18px;
-  padding:14px 22px;
-  background:linear-gradient(135deg,#f0c27b,#c79a55);
-  font-weight:bold;
-  cursor:pointer;
-}
-.status{margin-top:16px;color:#ddd}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remind Studio Pro · 8am – 8pm</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at top left, #18453b 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #5b3a12 0%, transparent 30%),
+        linear-gradient(135deg, #071814, #0f2f28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(920px, 100%);
+      background: rgba(20, 20, 20, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(240, 194, 123, 0.25);
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .header {
+      padding: 24px 30px;
+      background: linear-gradient(90deg, rgba(240, 194, 123, 0.12), transparent);
+      border-bottom: 1px solid rgba(240, 194, 123, 0.2);
+    }
+
+    h1 {
+      color: white;
+      font-size: 2rem;
+      letter-spacing: -0.5px;
+    }
+
+    .sub {
+      color: #d7c7a8;
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .preview {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(240, 194, 123, 0.25);
+      border-radius: 24px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      transition: border 0.2s;
+    }
+
+    .preview:focus-within {
+      border-color: #f0c27b;
+    }
+
+    .command {
+      color: #ffe6b8;
+      font-family: 'Consolas', 'Menlo', monospace;
+      font-size: 1.1rem;
+      word-break: break-word;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 22px;
+      padding: 18px;
+      transition: background 0.2s;
+    }
+
+    .box:hover {
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    label {
+      color: #f0c27b;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      color: #f5efe8;
+      outline: 1px solid transparent;
+      transition: outline 0.2s, background 0.2s;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: 1px solid #f0c27b;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="time"] {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    button {
+      border: none;
+      border-radius: 30px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #f0c27b, #c79a55);
+      font-weight: 600;
+      font-size: 1rem;
+      color: #0a1e1a;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(192, 150, 70, 0.25);
+      letter-spacing: 0.3px;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(192, 150, 70, 0.35);
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .status {
+      color: #cbc1b0;
+      font-size: 0.95rem;
+      padding: 6px 0;
+      min-height: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      background: rgba(240, 194, 123, 0.15);
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      color: #f0c27b;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(240, 194, 123, 0.2);
+      white-space: nowrap;
+    }
+
+    .inline-tip {
+      color: #b8aa92;
+      font-size: 0.8rem;
+      margin-left: 6px;
+    }
+
+    .info-line {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #b3a186;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+    }
+
+    @media (max-width: 600px) {
+      .header { padding: 20px; }
+      .content { padding: 20px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 <div class="card">
-<div class="header">
-<h1>✨ Remind Studio Pro</h1>
-<div class="sub">Premium glassmorphism • cleaner layout • mobile friendly</div>
-</div>
-<div class="content">
-<div class="preview">
-<div class="command" id="cmd">!remind 2026-06-09 10:00 team sync</div>
-</div>
+  <div class="header">
+    <h1>✨ Remind Studio Pro</h1>
+    <div class="sub">⏰ office hours · 8:00 – 20:00 (8 AM – 8 PM) · working days only</div>
+  </div>
+  <div class="content">
+    <div class="preview">
+      <div class="command" id="cmd">!remind 2026-06-09 10:00 team sync</div>
+    </div>
 
-<div class="grid">
-<div class="box">
-<label>Date</label>
-<input type="date" id="d">
-</div>
-<div class="box">
-<label>Time</label>
-<input type="time" id="t">
-</div>
-<div class="box">
-<label>Message</label>
-<textarea id="m">team sync</textarea>
-</div>
-</div>
+    <div class="grid">
+      <div class="box">
+        <label>📅 Date</label>
+        <input type="date" id="d">
+        <div style="font-size:0.7rem; color:#9c8e7a; margin-top:8px; padding-left:4px;">
+          <span id="dayInfo">—</span>
+        </div>
+      </div>
+      <div class="box">
+        <label>⏱️ Time (8:00 – 20:00)</label>
+        <input type="time" id="t" step="60">
+        <div style="font-size:0.7rem; color:#9c8e7a; margin-top:8px; padding-left:4px;">
+          <span id="timeInfo">office hours only</span>
+        </div>
+      </div>
+      <div class="box">
+        <label>💬 Message</label>
+        <textarea id="m">team sync</textarea>
+      </div>
+    </div>
 
-<button onclick="copyCmd()">Copy Command</button>
-<div class="status" id="s">Ready</div>
-</div>
+    <div class="action-row">
+      <button onclick="copyCmd()">📋 Copy command</button>
+      <div class="status" id="s">
+        <span>✅ Ready</span>
+        <span class="status-badge" id="statusBadge">working day</span>
+      </div>
+    </div>
+    <div class="info-line">
+      <span>🟢 working: Mon–Fri &amp; 1st,3rd,5th Saturdays</span>
+      <span>⛔ off: Sunday · 2nd Sat · 4th Sat</span>
+      <span>🕒 8:00 – 20:00 (8 AM – 8 PM)</span>
+    </div>
+  </div>
 </div>
 
 <script>
-const d=document.getElementById('d');
-const t=document.getElementById('t');
-const m=document.getElementById('m');
-const cmd=document.getElementById('cmd');
+  (function() {
+    const dInput = document.getElementById('d');
+    const tInput = document.getElementById('t');
+    const mInput = document.getElementById('m');
+    const cmdDisplay = document.getElementById('cmd');
+    const statusEl = document.getElementById('s');
+    const dayInfo = document.getElementById('dayInfo');
+    const timeInfo = document.getElementById('timeInfo');
+    const statusBadge = document.getElementById('statusBadge');
 
-function init(){
- let now=new Date();
- d.value=now.toISOString().slice(0,10);
- t.value='10:00';
- update();
-}
-function update(){
- cmd.textContent=`!remind ${d.value||'YYYY-MM-DD'} ${t.value||'HH:MM'} ${m.value||'reminder'}`;
-}
-[d,t,m].forEach(x=>x.addEventListener('input',update));
+    // ---------- helpers ----------
+    function isWorkingDay(dateObj) {
+      if (!dateObj || isNaN(dateObj.getTime())) return false;
+      const day = dateObj.getDay(); // 0=Sun, 6=Sat
+      if (day === 0) return false; // Sunday
 
-function copyCmd(){
- navigator.clipboard.writeText(cmd.textContent);
- document.getElementById('s').textContent='✅ Command copied';
-}
-init();
+      const date = dateObj.getDate();
+      // Saturday: 2nd or 4th saturday are off
+      if (day === 6) {
+        const satOrdinal = Math.ceil(date / 7); // 1..5
+        if (satOrdinal === 2 || satOrdinal === 4) return false;
+        // 1st, 3rd, 5th saturday are working
+        return true;
+      }
+      // Mon-Fri
+      return true;
+    }
+
+    function getDayLabel(dateObj) {
+      if (!dateObj || isNaN(dateObj.getTime())) return '—';
+      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const dayName = days[dateObj.getDay()];
+      const dateNum = dateObj.getDate();
+      const month = dateObj.toLocaleString('default', { month: 'short' });
+      const year = dateObj.getFullYear();
+      let suffix = '';
+      if (dateObj.getDay() === 6) {
+        const satOrd = Math.ceil(dateNum / 7);
+        const ord = satOrd === 1 ? 'st' : satOrd === 2 ? 'nd' : satOrd === 3 ? 'rd' : 'th';
+        suffix = ` (${satOrd}${ord} Sat)`;
+      }
+      return `${dayName}, ${dateNum} ${month} ${year}${suffix}`;
+    }
+
+    function getWorkingStatusText(dateObj) {
+      if (!dateObj || isNaN(dateObj.getTime())) return '—';
+      return isWorkingDay(dateObj) ? '✅ working day' : '⛔ non-working day';
+    }
+
+    function updateTimeInfo(timeVal) {
+      if (!timeVal) {
+        timeInfo.textContent = 'select time (8:00 – 20:00)';
+        return;
+      }
+      const parts = timeVal.split(':');
+      const hour = parseInt(parts[0], 10);
+      const minute = parseInt(parts[1], 10);
+      if (isNaN(hour) || isNaN(minute)) {
+        timeInfo.textContent = 'invalid time';
+        return;
+      }
+      const totalMinutes = hour * 60 + minute;
+      const minAllowed = 8 * 60;      // 8:00
+      const maxAllowed = 20 * 60;     // 20:00 (8 PM)
+      if (totalMinutes < minAllowed) {
+        timeInfo.textContent = '⏰ too early (min 8:00)';
+      } else if (totalMinutes > maxAllowed) {
+        timeInfo.textContent = '⏰ too late (max 20:00)';
+      } else {
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        timeInfo.textContent = `✅ ${displayHour}:${String(minute).padStart(2,'0')} ${ampm} · office hours`;
+      }
+    }
+
+    function isTimeValid(timeVal) {
+      if (!timeVal) return false;
+      const parts = timeVal.split(':');
+      const hour = parseInt(parts[0], 10);
+      const minute = parseInt(parts[1], 10);
+      if (isNaN(hour) || isNaN(minute)) return false;
+      const total = hour * 60 + minute;
+      return total >= 8 * 60 && total <= 20 * 60;
+    }
+
+    // ---------- main update ----------
+    function updateCommandAndStatus() {
+      const dateVal = dInput.value;
+      const timeVal = tInput.value;
+      const msg = mInput.value.trim() || 'reminder';
+
+      let dateObj = null;
+      if (dateVal) {
+        const parts = dateVal.split('-');
+        dateObj = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+      }
+
+      // update day info
+      if (dateObj && !isNaN(dateObj.getTime())) {
+        const label = getDayLabel(dateObj);
+        const status = getWorkingStatusText(dateObj);
+        dayInfo.textContent = `${label} · ${status}`;
+      } else {
+        dayInfo.textContent = '—';
+      }
+
+      // time info + validation
+      let timeOk = false;
+      if (timeVal) {
+        updateTimeInfo(timeVal);
+        timeOk = isTimeValid(timeVal);
+      } else {
+        timeInfo.textContent = 'select time (8:00 – 20:00)';
+        timeOk = false;
+      }
+
+      // date working day?
+      let dateOk = false;
+      if (dateObj && !isNaN(dateObj.getTime())) {
+        dateOk = isWorkingDay(dateObj);
+      } else {
+        dateOk = false;
+      }
+
+      // build command
+      let displayDate = dateVal || 'YYYY-MM-DD';
+      let displayTime = timeVal || 'HH:MM';
+      const cmdText = `!remind ${displayDate} ${displayTime} ${msg}`;
+      cmdDisplay.textContent = cmdText;
+
+      // update status badge & message
+      if (!dateVal) {
+        statusBadge.textContent = '⏳ select date';
+        statusEl.innerHTML = `<span>⚠️ Select a date</span><span class="status-badge">pending</span>`;
+        return;
+      }
+      if (!dateOk) {
+        statusBadge.textContent = '⛔ off day';
+        statusEl.innerHTML = `<span>⛔ Non-working day (Sunday / 2nd/4th Sat)</span><span class="status-badge">off</span>`;
+        return;
+      }
+      if (!timeOk) {
+        statusBadge.textContent = '⏰ outside hours';
+        statusEl.innerHTML = `<span>⏰ Time must be between 8:00 – 20:00 (8 AM – 8 PM)</span><span class="status-badge">adjust</span>`;
+        return;
+      }
+
+      // all good
+      statusBadge.textContent = '✅ working';
+      statusEl.innerHTML = `<span>✅ Ready · ${dateVal} ${timeVal}</span><span class="status-badge">working day</span>`;
+    }
+
+    // ---------- copy ----------
+    window.copyCmd = function() {
+      const text = cmdDisplay.textContent;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = statusEl.innerHTML;
+        statusEl.innerHTML = `<span>✅ Command copied</span><span class="status-badge">copied</span>`;
+        setTimeout(() => {
+          updateCommandAndStatus();
+        }, 1800);
+      }).catch(() => {
+        // fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        statusEl.innerHTML = `<span>📋 Copied (fallback)</span><span class="status-badge">done</span>`;
+        setTimeout(updateCommandAndStatus, 1500);
+      });
+    };
+
+    // ---------- init ----------
+    function init() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      dInput.value = `${year}-${month}-${day}`;
+
+      // default time 9:00 AM (office)
+      tInput.value = '09:00';
+
+      // set default message if empty
+      if (!mInput.value.trim()) {
+        mInput.value = 'team sync';
+      }
+
+      // attach events
+      [dInput, tInput, mInput].forEach(el => {
+        el.addEventListener('input', updateCommandAndStatus);
+      });
+
+      // extra: if time changes, re-validate
+      tInput.addEventListener('change', updateCommandAndStatus);
+      dInput.addEventListener('change', updateCommandAndStatus);
+
+      updateCommandAndStatus();
+    }
+
+    init();
+  })();
 </script>
 </body>
 </html>
