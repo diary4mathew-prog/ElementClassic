@@ -23,7 +23,6 @@
       display:flex;flex-direction:column;align-items:center;position:relative;
     }
 
-    /* ---- bg ---- */
     .bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
     .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.25;animation:oF 22s ease-in-out infinite alternate}
     .orb-1{width:380px;height:380px;background:radial-gradient(circle,#18453b,transparent 70%);top:-12%;left:-14%}
@@ -35,14 +34,11 @@
     .particle{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;opacity:0;animation:pD linear infinite}
     @keyframes pD{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.4}90%{opacity:.25}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
 
-    /* ---- wrapper ---- */
     .main-wrapper{position:relative;z-index:10;width:100%;max-width:460px;height:100%;display:flex;flex-direction:column;padding:0 12px}
 
-    /* ---- tab nav ---- */
     .tab-nav{
       display:flex;background:var(--input);padding:3px;border-radius:14px;
-      margin:12px 0 10px;position:relative;flex-shrink:0;
-      border:1px solid var(--border-s);
+      margin:12px 0 10px;position:relative;flex-shrink:0;border:1px solid var(--border-s);
     }
     .tab-btn{
       flex:1;padding:11px 0;border:none;background:transparent;
@@ -58,27 +54,22 @@
     }
     .tab-slider.right{transform:translateX(calc(100% + 3px))}
 
-    /* ---- pages ---- */
     .pages{flex:1;overflow:hidden;position:relative}
     .page{
       position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
       -webkit-overflow-scrolling:touch;opacity:0;transform:translateY(8px);
-      transition:opacity .3s ease,transform .3s ease;pointer-events:none;
-      padding-bottom:40px;
+      transition:opacity .3s ease,transform .3s ease;pointer-events:none;padding-bottom:40px;
     }
     .page.active{opacity:1;transform:translateY(0);pointer-events:auto}
     .page::-webkit-scrollbar{width:3px}
     .page::-webkit-scrollbar-thumb{background:rgba(240,194,123,.08);border-radius:8px}
 
-    /* ---- card ---- */
     .card{
       background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
       border:1px solid var(--border);border-radius:22px;padding:20px;
       box-shadow:0 8px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03);
     }
-    .card+.card{margin-top:12px}
 
-    /* ---- header row ---- */
     .header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
     .header-row h2{font-size:1.1rem;font-weight:700;letter-spacing:-.2px}
     .btn-reset{
@@ -88,7 +79,6 @@
     }
     .btn-reset:active{transform:scale(.93);background:rgba(232,136,136,.1)}
 
-    /* ---- day status ---- */
     .day-status{
       display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;
       margin-bottom:16px;padding:8px 12px;border-radius:10px;
@@ -97,7 +87,6 @@
     .day-status.off{background:rgba(232,136,136,.06);border-color:rgba(232,136,136,.1);color:var(--red)}
     .day-status .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
 
-    /* ---- quick pills ---- */
     .pill-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
     .pill-btn{
       background:var(--glass);border:1px solid var(--border-s);color:var(--text-dim);
@@ -106,21 +95,17 @@
     }
     .pill-btn:active{background:rgba(240,194,123,.15);color:var(--gold);border-color:var(--gold);transform:scale(.94)}
 
-    /* ---- labels ---- */
     label{display:block;font-size:.65rem;font-weight:700;margin-bottom:7px;opacity:.5;text-transform:uppercase;letter-spacing:1px;margin-top:14px}
 
-    /* ---- inputs ---- */
-    input[type="date"],input[type="text"],input[type="tel"]{
+    .std-input{
       width:100%;padding:13px 14px;border:1px solid var(--border-s);border-radius:12px;
       background:var(--input);color:var(--text);font-size:1rem;
       box-sizing:border-box;outline:none;transition:all .25s;font-family:inherit;
       -webkit-appearance:none;appearance:none;
     }
-    input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
-    input[type="date"]{color-scheme:dark}
-    input[type="tel"]{font-family:'Consolas','Menlo',monospace;letter-spacing:2px;font-size:1.15rem;text-align:center}
+    .std-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
+    input[type="date"].std-input{color-scheme:dark}
 
-    /* ---- jumper row ---- */
     .jumper-row{display:flex;gap:6px;margin-top:6px}
     .jumper-btn{
       flex:1;background:var(--glass);border:1px solid var(--border-s);color:var(--gold);
@@ -129,22 +114,84 @@
     }
     .jumper-btn:active{background:rgba(240,194,123,.12);border-color:var(--gold);transform:scale(.95)}
 
-    /* ---- hybrid time ---- */
-    .time-hybrid{display:flex;gap:8px}
-    .time-hybrid input[type="tel"]{flex:1}
+    /*
+     * ============================================================
+     *  TIME INPUT — THE KEY FIX
+     *  The <input type="time"> is NOT hidden.
+     *  It sits on top of the 🕒 icon with transparent text.
+     *  This is the ONLY reliable way to trigger native pickers
+     *  on all mobile browsers (iOS Safari, Chrome Android, etc.)
+     * ============================================================
+     */
+    .time-hybrid{display:flex;gap:8px;align-items:stretch}
+    .time-manual{
+      flex:1;padding:13px 14px;border:1px solid var(--border-s);border-radius:12px;
+      background:var(--input);color:var(--text);font-size:1.15rem;
+      font-family:'Consolas','Menlo',monospace;letter-spacing:2px;text-align:center;
+      box-sizing:border-box;outline:none;transition:all .25s;
+      -webkit-appearance:none;appearance:none;
+    }
+    .time-manual:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
+    .time-manual::placeholder{color:var(--text-muted);font-size:.9rem;letter-spacing:1px}
+
+    /* The picker wrapper — this IS the tappable area */
     .picker-wrap{
-      width:52px;background:var(--input);border:1px solid var(--border-s);
-      border-radius:12px;display:flex;align-items:center;justify-content:center;
-      font-size:1.4rem;cursor:pointer;position:relative;flex-shrink:0;
+      position:relative;
+      width:52px;
+      flex-shrink:0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid var(--border-s);
+      background:var(--input);
       transition:border-color .2s;
     }
     .picker-wrap:active{border-color:var(--gold)}
-    .picker-wrap input[type="time"]{
-      position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;
-      border:none;padding:0;
+
+    /* 🕒 icon sits behind the input */
+    .picker-icon{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.4rem;
+      pointer-events:none; /* let taps pass through to the input above */
+      z-index:1;
     }
 
-    /* ---- generate ---- */
+    /*
+     * The actual <input type="time"> — fully visible, fully tappable,
+     * just with invisible text. This is the critical difference.
+     * opacity:1, position:absolute over the icon, transparent color.
+     */
+    .picker-real{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:none;
+      background:transparent;
+      /* Hide the native time text but keep the element fully interactive */
+      color:transparent;
+      -webkit-text-fill-color:transparent;
+      -webkit-appearance:none;
+      appearance:none;
+      z-index:2;
+      cursor:pointer;
+      color-scheme:dark;
+      /* Prevent iOS from zooming on focus */
+      font-size:16px;
+      /* Remove any native decoration that might peek through */
+      outline:none;
+      box-shadow:none;
+    }
+
+    .time-warn{
+      font-size:.7rem;color:var(--red);margin-top:6px;padding:0 2px;
+      opacity:0;max-height:0;overflow:hidden;transition:all .25s;
+    }
+    .time-warn.show{opacity:1;max-height:30px;margin-top:8px}
+
     .btn-generate{
       width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));
       color:#0a1e1a;border:none;border-radius:14px;padding:16px;font-size:1.05rem;
@@ -153,10 +200,9 @@
     }
     .btn-generate:active{transform:scale(.97);box-shadow:0 2px 8px rgba(192,150,70,.15)}
 
-    /* ---- output ---- */
     .output-section{
       margin-top:20px;border-top:1px solid var(--border-s);padding-top:16px;
-      max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .3s ease,margin .3s;pointer-events:none;
+      max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .3s ease;pointer-events:none;
     }
     .output-section.active{max-height:400px;opacity:1;pointer-events:auto}
     .output-section label{margin-top:0}
@@ -173,13 +219,6 @@
     }
     .btn-copy:active{background:rgba(240,194,123,.12);color:var(--gold);border-color:var(--gold);transform:scale(.93)}
     .btn-copy.copied{color:var(--green);border-color:rgba(109,212,160,.3);background:rgba(109,212,160,.08)}
-
-    /* ---- time warning ---- */
-    .time-warn{
-      font-size:.7rem;color:var(--red);margin-top:6px;padding:0 2px;
-      opacity:0;max-height:0;overflow:hidden;transition:all .25s;
-    }
-    .time-warn.show{opacity:1;max-height:30px;margin-top:8px}
 
     /* ======== HISTORY ======== */
     .log-section{margin-bottom:14px}
@@ -221,7 +260,6 @@
     .btn-icon.edit:active{background:rgba(240,194,123,.12);color:var(--gold);border-color:rgba(240,194,123,.2)}
     .btn-icon.del:active{background:rgba(232,136,136,.12);color:var(--red);border-color:rgba(232,136,136,.2)}
 
-    /* inline edit */
     .inline-edit{display:none;padding:10px 14px;background:rgba(0,0,0,.2);border-radius:12px;margin-top:8px;border:1px solid var(--border)}
     .inline-edit.active{display:block;animation:logIn .25s ease}
     .ie-row{display:flex;gap:6px;margin-bottom:6px}
@@ -252,7 +290,6 @@
     }
     .btn-clear-history:active{background:rgba(232,136,136,.08);transform:scale(.97)}
 
-    /* ---- toast ---- */
     .toast-box{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:calc(100% - 40px);max-width:400px}
     .toast{
       width:100%;background:rgba(16,16,16,.94);backdrop-filter:blur(16px);
@@ -265,7 +302,6 @@
     @keyframes tI{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
     @keyframes tO{from{opacity:1}to{opacity:0;transform:translateY(-8px) scale(.96)}}
 
-    /* ---- modal ---- */
     .modal-ov{
       position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);
       display:flex;align-items:center;justify-content:center;z-index:9998;
@@ -305,7 +341,7 @@
   </div>
 
   <div class="pages">
-    <!-- ===== CREATE PAGE ===== -->
+    <!-- ===== CREATE ===== -->
     <div class="page active" id="page-create">
       <div class="card">
         <div class="header-row">
@@ -323,7 +359,7 @@
           </div>
 
           <label>Date</label>
-          <input type="date" id="dateIn">
+          <input type="date" id="dateIn" class="std-input">
           <div class="jumper-row">
             <button type="button" class="jumper-btn" onclick="addWorkingDays(1)">+1 Day</button>
             <button type="button" class="jumper-btn" onclick="addWorkingDays(2)">+2 Days</button>
@@ -332,13 +368,23 @@
 
           <label>Time <span style="opacity:.5;font-weight:400">(8 AM – 8 PM)</span></label>
           <div class="time-hybrid">
-            <input type="tel" id="manualTimeIn" placeholder="HH:MM" maxlength="5" oninput="handleManualTime(this)">
-            <div class="picker-wrap">🕒<input type="time" id="hiddenPicker" onchange="syncFromPicker(this)"></div>
+            <!-- Manual HH:MM typing -->
+            <input type="tel" id="manualTimeIn" class="time-manual" placeholder="HH:MM" maxlength="5" inputmode="numeric" autocomplete="off">
+            <!--
+              TIME PICKER — NOT HIDDEN
+              The <input type="time"> sits directly on top of the 🕒 icon.
+              Text is transparent so you only see the icon,
+              but the element is 100% real and tappable on every browser.
+            -->
+            <div class="picker-wrap">
+              <span class="picker-icon">🕒</span>
+              <input type="time" id="timePicker" class="picker-real">
+            </div>
           </div>
           <div class="time-warn" id="timeWarn">⏰ Outside office hours (8:00 AM – 8:00 PM)</div>
 
           <label>Message</label>
-          <input type="text" id="msgIn" placeholder="Enter reminder text..." enterkeyhint="go">
+          <input type="text" id="msgIn" class="std-input" placeholder="Enter reminder text..." enterkeyhint="go">
 
           <button type="submit" class="btn-generate">GENERATE</button>
         </form>
@@ -358,7 +404,7 @@
       </div>
     </div>
 
-    <!-- ===== HISTORY PAGE ===== -->
+    <!-- ===== HISTORY ===== -->
     <div class="page" id="page-history">
       <div class="card">
         <div class="header-row"><h2>Saved Logs</h2></div>
@@ -375,24 +421,22 @@
 
 <script>
 (function(){
-  /* particles */
   !function(){const c=document.getElementById('particles');for(let i=0;i<14;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.width=p.style.height=(1+Math.random()*1.5)+'px';p.style.animationDuration=(14+Math.random()*18)+'s';p.style.animationDelay=(-Math.random()*18)+'s';c.appendChild(p)}}();
 
   let historyData=[];
-  const K='elemRemindPro_v5';
+  const K='elemRemindPro_v7';
   const slider=document.getElementById('tabSlider');
   const dayStatusEl=document.getElementById('dayStatus');
   const dayStatusText=document.getElementById('dayStatusText');
   const timeWarn=document.getElementById('timeWarn');
+  const manualTimeIn=document.getElementById('manualTimeIn');
+  const timePicker=document.getElementById('timePicker');
 
-  /* ---- storage ---- */
   function loadH(){try{return JSON.parse(localStorage.getItem(K))||[]}catch{return[]}}
   function saveH(){localStorage.setItem(K,JSON.stringify(historyData))}
 
-  /* ---- toast ---- */
   function toast(t){const c=document.getElementById('toastBox'),e=document.createElement('div');e.className='toast';e.textContent=t;c.appendChild(e);setTimeout(()=>{if(e.parentNode)e.remove()},2600)}
 
-  /* ---- modal ---- */
   function confirm2(title,msg,ico,yes){
     const o=document.createElement('div');o.className='modal-ov';
     o.innerHTML=`<div class="modal-bx"><span class="modal-ico">${ico}</span><h3>${title}</h3><p>${msg}</p><div class="modal-btns"><button class="mb mb-cancel">Cancel</button><button class="mb mb-del">Delete</button></div></div>`;
@@ -402,7 +446,6 @@
     o.addEventListener('click',e=>{if(e.target===o)o.remove()});
   }
 
-  /* ---- tabs ---- */
   window.switchTab=function(name){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -418,7 +461,6 @@
     }
   };
 
-  /* ---- working day ---- */
   function isWD(d){
     const w=d.getDay(),dt=d.getDate();
     if(w===0)return false;
@@ -427,7 +469,6 @@
   }
   function nextWD(d){while(!isWD(d))d.setDate(d.getDate()+1);return d}
 
-  /* ---- update day status ---- */
   function updateDayStatus(){
     const v=document.getElementById('dateIn').value;
     if(!v){dayStatusEl.className='day-status';dayStatusText.textContent='Select a date';return}
@@ -437,41 +478,66 @@
     const dn=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     let suf='';
     if(dt.getDay()===6){const o=Math.ceil(d/7);suf=` (${o}${o===1?'st':o===2?'nd':o===3?'rd':'th'} Sat)`}
-    dayStatusText.textContent=wk?`${dn[dt.getDay()]}, ${d} ${dt.toLocaleString('default',{month:'short'})}${suf} · Working day`:`${dn[dt.getDay()]}, ${d} ${dt.toLocaleString('default',{month:'short'})}${suf} · Off day`;
+    dayStatusText.textContent=wk
+      ?`${dn[dt.getDay()]}, ${d} ${dt.toLocaleString('default',{month:'short'})}${suf} · Working day`
+      :`${dn[dt.getDay()]}, ${d} ${dt.toLocaleString('default',{month:'short'})}${suf} · Off day`;
   }
 
-  /* ---- time validation ---- */
   function validateTime(){
-    const v=document.getElementById('manualTimeIn').value;
+    const v=manualTimeIn.value;
     if(!v||v.length<5){timeWarn.classList.remove('show');return}
-    const[h,m]=v.split(':').map(Number);
+    const p=v.split(':');
+    if(p.length!==2){timeWarn.classList.remove('show');return}
+    const h=parseInt(p[0],10),m=parseInt(p[1],10);
     if(isNaN(h)||isNaN(m)){timeWarn.classList.remove('show');return}
-    const t=h*60+m;
-    timeWarn.classList.toggle('show',t<480||t>1200);
+    timeWarn.classList.toggle('show',(h*60+m)<480||(h*60+m)>1200);
   }
 
-  /* ---- inputs ---- */
+  /* ---- Manual input: type digits, auto-insert colon ---- */
+  manualTimeIn.addEventListener('input',function(){
+    let digits=this.value.replace(/[^0-9]/g,'');
+    if(digits.length>4)digits=digits.substring(0,4);
+    if(digits.length>=3){
+      this.value=digits.substring(0,2)+':'+digits.substring(2);
+    }else{
+      this.value=digits;
+    }
+    if(this.value.length===5)timePicker.value=this.value;
+    validateTime();
+  });
+
+  /* Prevent cursor getting stuck after colon on backspace */
+  manualTimeIn.addEventListener('keydown',function(e){
+    if(e.key==='Backspace'&&this.selectionStart===3&&this.value.charAt(2)===':'){
+      e.preventDefault();
+      this.setSelectionRange(2,2);
+    }
+  });
+
+  /* ---- Picker changes → sync to manual input ---- */
+  timePicker.addEventListener('change',function(){
+    if(this.value){
+      manualTimeIn.value=this.value;
+      validateTime();
+    }
+  });
+  timePicker.addEventListener('input',function(){
+    if(this.value&&this.value.length===5){
+      manualTimeIn.value=this.value;
+      validateTime();
+    }
+  });
+
+  /* ---- Set both inputs from a Date ---- */
   function updateInputs(d){
     const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
     document.getElementById('dateIn').value=`${y}-${m}-${day}`;
-    const h=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');
-    document.getElementById('manualTimeIn').value=`${h}:${min}`;
-    document.getElementById('hiddenPicker').value=`${h}:${min}`;
-    updateDayStatus();validateTime();
+    const t=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    manualTimeIn.value=t;
+    timePicker.value=t;
+    updateDayStatus();
+    validateTime();
   }
-
-  window.syncFromPicker=function(p){
-    document.getElementById('manualTimeIn').value=p.value;
-    validateTime();
-  };
-
-  window.handleManualTime=function(i){
-    let v=i.value.replace(/[^0-9]/g,'');
-    if(v.length>=3)v=v.substring(0,2)+':'+v.substring(2,4);
-    i.value=v;
-    if(v.length===5)document.getElementById('hiddenPicker').value=v;
-    validateTime();
-  };
 
   window.setSmartTime=function(h,m){
     let d=new Date();d.setHours(h,m,0,0);
@@ -489,39 +555,34 @@
     updateInputs(d);
   };
 
-  /* ---- generate ---- */
   window.generate=function(){
     if(document.activeElement)document.activeElement.blur();
     const dStr=document.getElementById('dateIn').value;
-    const tStr=document.getElementById('manualTimeIn').value;
+    const tStr=manualTimeIn.value;
     const msg=document.getElementById('msgIn').value.trim();
-
     if(!dStr){toast('⚠️ Select a date');return}
     if(!tStr||tStr.length<5){toast('⚠️ Enter a valid time');return}
     if(!msg){toast('⚠️ Enter a message');return}
+    const p=tStr.split(':');
+    const tH=parseInt(p[0],10),tM=parseInt(p[1],10);
+    if(isNaN(tH)||isNaN(tM)||tH<0||tH>23||tM<0||tM>59){toast('⚠️ Invalid time');return}
 
     const botCmd=`!remind ${dStr} ${tStr} ${msg}`;
     document.getElementById('outBot').value=botCmd;
 
-    let cleanCmd='';
-    if(tStr.length===5){
-      const[y,M,D]=dStr.split('-').map(Number);
-      const[h,m]=tStr.split(':').map(Number);
-      let cd=new Date(y,M-1,D,h,m);cd.setMinutes(cd.getMinutes()+10);
-      cleanCmd=`remind ${cd.getFullYear()}-${String(cd.getMonth()+1).padStart(2,'0')}-${String(cd.getDate()).padStart(2,'0')} ${String(cd.getHours()).padStart(2,'0')}:${String(cd.getMinutes()).padStart(2,'0')} ${msg}`;
-      document.getElementById('outClean').value=cleanCmd;
-    }
+    const[y,M,D]=dStr.split('-').map(Number);
+    let cd=new Date(y,M-1,D,tH,tM);cd.setMinutes(cd.getMinutes()+10);
+    const cleanCmd=`remind ${cd.getFullYear()}-${String(cd.getMonth()+1).padStart(2,'0')}-${String(cd.getDate()).padStart(2,'0')} ${String(cd.getHours()).padStart(2,'0')}:${String(cd.getMinutes()).padStart(2,'0')} ${msg}`;
+    document.getElementById('outClean').value=cleanCmd;
 
     document.getElementById('outputSection').classList.add('active');
     addToHistory(dStr,tStr,msg,cleanCmd);
     toast('✅ Generated!');
   };
 
-  /* ---- history ---- */
   function addToHistory(date,time,msg,cleanCmd){
     const safeMsg=msg||'(No Message)';
-    const exists=historyData.some(i=>i.date===date&&i.time===time&&i.msg===safeMsg);
-    if(exists)return;
+    if(historyData.some(i=>i.date===date&&i.time===time&&i.msg===safeMsg))return;
     historyData.push({id:Date.now(),date,time,msg:safeMsg,cleanCmd});
     historyData.sort((a,b)=>a.date!==b.date?a.date.localeCompare(b.date):a.time.localeCompare(b.time));
     saveH();
@@ -532,85 +593,48 @@
     if(!historyData.length){c.innerHTML='<div class="empty-log"><span class="empty-log-icon">📋</span>No reminders generated yet.</div>';return}
     const grouped={};
     historyData.forEach(i=>{if(!grouped[i.date])grouped[i.date]=[];grouped[i.date].push(i)});
-
     let html='';
     for(const dk in grouped){
       const items=grouped[dk];
       const upCount=items.filter(i=>iUp(i.date,i.time)).length;
-      html+=`<div class="log-section">
-        <div class="log-header">
-          <div><div class="log-date">${dk}</div><div class="log-date-sub">${items.length} reminder${items.length>1?'s':''} · ${upCount} upcoming</div></div>
-          <div class="header-actions">
-            <button class="btn-sm btn-summary" onclick="copyDailySummary('${dk}')">Copy</button>
-            <button class="btn-sm btn-email" onclick="emailDailySummary('${dk}')">✉️ Email</button>
-          </div>
-        </div>`;
+      html+=`<div class="log-section"><div class="log-header"><div><div class="log-date">${dk}</div><div class="log-date-sub">${items.length} reminder${items.length>1?'s':''} · ${upCount} upcoming</div></div><div class="header-actions"><button class="btn-sm btn-summary" onclick="copyDailySummary('${dk}')">Copy</button><button class="btn-sm btn-email" onclick="emailDailySummary('${dk}')">✉️ Email</button></div></div>`;
       items.forEach((item,idx)=>{
-        const up=iUp(item.date,item.time);
-        html+=`<div class="log-item" id="li-${item.id}" style="animation-delay:${idx*40}ms${up?''}">`
-          +`<div class="log-details"><span class="log-time">${item.time}</span><span class="log-msg" title="${esc(item.msg)}">${esc(item.msg)}</span></div>`
-          +`<div class="log-actions">`
-            +`<button class="btn-icon resch" onclick="rescheduleItem(${item.id})" title="Reschedule">🔄</button>`
-            +`<button class="btn-icon edit" onclick="toggleEdit(${item.id})" title="Edit">✏️</button>`
-            +`<button class="btn-icon del" onclick="deleteItem(${item.id})" title="Delete">🗑️</button>`
-          +`</div></div>`
-          +`<div class="inline-edit" id="ie-${item.id}">`
-            +`<div class="ie-row"><input type="time" class="ie-input" id="ie-t-${item.id}" value="${item.time}"></div>`
-            +`<div class="ie-row"><input type="text" class="ie-input" id="ie-m-${item.id}" value="${esc(item.msg)}" placeholder="Message"></div>`
-            +`<div class="ie-actions">`
-              +`<button class="ie-btn ie-cancel" onclick="toggleEdit(${item.id})">Cancel</button>`
-              +`<button class="ie-btn ie-save" onclick="saveInlineEdit(${item.id})">💾 Save</button>`
-            +`</div></div>`;
+        html+=`<div class="log-item" id="li-${item.id}" style="animation-delay:${idx*40}ms"><div class="log-details"><span class="log-time">${item.time}</span><span class="log-msg" title="${esc(item.msg)}">${esc(item.msg)}</span></div><div class="log-actions"><button class="btn-icon resch" onclick="rescheduleItem(${item.id})" title="Reschedule">🔄</button><button class="btn-icon edit" onclick="toggleEdit(${item.id})" title="Edit">✏️</button><button class="btn-icon del" onclick="deleteItem(${item.id})" title="Delete">🗑️</button></div></div><div class="inline-edit" id="ie-${item.id}"><div class="ie-row"><input type="time" class="ie-input" id="ie-t-${item.id}" value="${item.time}"></div><div class="ie-row"><input type="text" class="ie-input" id="ie-m-${item.id}" value="${esc(item.msg)}" placeholder="Message"></div><div class="ie-actions"><button class="ie-btn ie-cancel" onclick="toggleEdit(${item.id})">Cancel</button><button class="ie-btn ie-save" onclick="saveInlineEdit(${item.id})">💾 Save</button></div></div>`;
       });
       html+=`</div>`;
     }
     c.innerHTML=html;
   }
 
-  function iUp(ds,ts){
-    const[y,M,D]=ds.split('-').map(Number);const[h,m]=(ts||'00:00').split(':').map(Number);
-    const d=new Date(y,M-1,D,h,m,0,0);return d.getTime()>Date.now();
-  }
+  function iUp(ds,ts){const[y,M,D]=ds.split('-').map(Number);const[h,m]=(ts||'00:00').split(':').map(Number);return new Date(y,M-1,D,h,m,0,0).getTime()>Date.now()}
   function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
   window.rescheduleItem=function(id){
     const item=historyData.find(i=>i.id===id);if(!item)return;
     document.getElementById('dateIn').value=item.date;
-    document.getElementById('manualTimeIn').value=item.time;
-    document.getElementById('hiddenPicker').value=item.time;
+    manualTimeIn.value=item.time;timePicker.value=item.time;
     document.getElementById('msgIn').value=item.msg==='(No Message)'?'':item.msg;
-    updateDayStatus();validateTime();
-    switchTab('create');
-    toast('📋 Loaded for reschedule');
+    updateDayStatus();validateTime();switchTab('create');toast('📋 Loaded for reschedule');
   };
 
   window.toggleEdit=function(id){
-    const el=document.getElementById('ie-'+id);
-    const li=document.getElementById('li-'+id);
-    if(!el)return;
+    const el=document.getElementById('ie-'+id),li=document.getElementById('li-'+id);if(!el)return;
     const isOpen=el.classList.contains('active');
-    /* close all first */
     document.querySelectorAll('.inline-edit.active').forEach(e=>e.classList.remove('active'));
     document.querySelectorAll('.log-item.editing').forEach(e=>e.classList.remove('editing'));
     if(!isOpen){el.classList.add('active');li.classList.add('editing')}
   };
 
   window.saveInlineEdit=function(id){
-    const tEl=document.getElementById('ie-t-'+id);
-    const mEl=document.getElementById('ie-m-'+id);
+    const tEl=document.getElementById('ie-t-'+id),mEl=document.getElementById('ie-m-'+id);
     if(!tEl||!mEl)return;
     const newTime=tEl.value,newMsg=mEl.value.trim()||'(No Message)';
+    if(!newTime||newTime.length<5){toast('⚠️ Enter valid time');return}
     const idx=historyData.findIndex(i=>i.id===id);if(idx===-1)return;
-
-    /* rebuild clean cmd */
     const item=historyData[idx];
-    let cleanCmd='';
-    if(newTime.length===5){
-      const[y,M,D]=item.date.split('-').map(Number);
-      const[h,m]=newTime.split(':').map(Number);
-      let cd=new Date(y,M-1,D,h,m);cd.setMinutes(cd.getMinutes()+10);
-      cleanCmd=`remind ${cd.getFullYear()}-${String(cd.getMonth()+1).padStart(2,'0')}-${String(cd.getDate()).padStart(2,'0')} ${String(cd.getHours()).padStart(2,'0')}:${String(cd.getMinutes()).padStart(2,'0')} ${newMsg}`;
-    }
+    const[y,M,D]=item.date.split('-').map(Number);const[h,m]=newTime.split(':').map(Number);
+    let cd=new Date(y,M-1,D,h,m);cd.setMinutes(cd.getMinutes()+10);
+    const cleanCmd=`remind ${cd.getFullYear()}-${String(cd.getMonth()+1).padStart(2,'0')}-${String(cd.getDate()).padStart(2,'0')} ${String(cd.getHours()).padStart(2,'0')}:${String(cd.getMinutes()).padStart(2,'0')} ${newMsg}`;
     historyData[idx]={...item,time:newTime,msg:newMsg,cleanCmd};
     historyData.sort((a,b)=>a.date!==b.date?a.date.localeCompare(b.date):a.time.localeCompare(b.time));
     saveH();renderLogs();toast('✅ Updated');
@@ -636,7 +660,7 @@
     let text=`SCHEDULE FOR ${dk}:\n`;
     items.forEach(i=>text+=`${i.cleanCmd||'!remind '+i.date+' '+i.time+' '+i.msg}\n`);
     if(window.AppInventor){window.AppInventor.setWebViewString(text);toast('✉️ Opening email...')}
-    else{navigator.clipboard.writeText(text).then(()=>toast('📋 Summary copied to clipboard (email not available in browser)')).catch(()=>toast('Email requires AppInventor WebView'))}
+    else{navigator.clipboard.writeText(text).then(()=>toast('📋 Copied (email needs AppInventor)')).catch(()=>toast('Email requires AppInventor WebView'))}
   };
 
   window.clearHistory=function(){
@@ -647,11 +671,9 @@
   };
 
   window.resetForm=function(){
-    document.getElementById('msgIn').value='';
-    updateInputs(new Date());
+    document.getElementById('msgIn').value='';updateInputs(new Date());
     document.getElementById('outputSection').classList.remove('active');
-    document.getElementById('outBot').value='';
-    document.getElementById('outClean').value='';
+    document.getElementById('outBot').value='';document.getElementById('outClean').value='';
   };
 
   window.copyEl=function(id,btn){
@@ -660,22 +682,14 @@
       btn.textContent='✓';btn.classList.add('copied');
       setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},1200);
     }).catch(()=>{
-      document.execCommand('copy');
-      btn.textContent='✓';btn.classList.add('copied');
+      document.execCommand('copy');btn.textContent='✓';btn.classList.add('copied');
       setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},1200);
     });
   };
 
-  /* ---- date/time listeners ---- */
   document.getElementById('dateIn').addEventListener('change',updateDayStatus);
-  document.getElementById('manualTimeIn').addEventListener('input',validateTime);
 
-  /* ---- init ---- */
-  !function(){
-    updateInputs(new Date());
-    historyData=loadH();
-    renderLogs();
-  }();
+  !function(){updateInputs(new Date());historyData=loadH();renderLogs()}();
 })();
 </script>
 </body>
