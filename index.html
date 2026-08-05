@@ -136,6 +136,26 @@
     .toast .toast-actions{display:flex;gap:.4rem;margin-top:.5rem;}
     .toast .toast-actions button{background:#1e2e25;border:1px solid #3a5a45;color:#a8e0b8;padding:.2rem .55rem;border-radius:20px;font-size:.65rem;cursor:pointer;font-family:monospace;}
     .toast .toast-actions button:hover{background:#2e4e3a;}
+    .modal-overlay{position:fixed;inset:0;background:rgba(10,15,12,.72);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:10000;padding:1.2rem;}
+    .modal-overlay.open{display:flex;}
+    .modal-box{background:#fef9e8;background-image:radial-gradient(circle at 25% 40%,rgba(210,180,140,.08) 1.5px,transparent 1.5px);background-size:28px 28px;border-radius:1.5rem;border:1px solid #e9d6af;max-width:640px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 25px 50px rgba(0,0,0,.5);overflow:hidden;}
+    .modal-head{background:#2c2e2b;padding:.9rem 1.4rem;border-bottom:4px solid #c9a87b;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .modal-head h2{color:#ffe3b3;font-size:1rem;letter-spacing:2px;text-shadow:2px 2px 0 #5a3e1f;}
+    .modal-body{padding:1.2rem 1.4rem 1.6rem;overflow-y:auto;}
+    .modal-body::-webkit-scrollbar{width:6px;}
+    .modal-body::-webkit-scrollbar-thumb{background:#d4b88a;border-radius:10px;}
+    .modal-section{margin-bottom:1.3rem;}
+    .modal-section h3{font-size:.78rem;letter-spacing:1px;color:#2b3b33;border-left:5px solid #cb7b2c;padding-left:.6rem;margin-bottom:.55rem;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;}
+    .modal-order{font-size:.6rem;font-weight:400;color:#8a6a3a;letter-spacing:.5px;}
+    .fmt-table{width:100%;border-collapse:collapse;font-size:.74rem;}
+    .fmt-table tr{border-bottom:1px solid #eadbbe;}
+    .fmt-table tr:last-child{border-bottom:none;}
+    .fmt-table td{padding:.4rem .3rem;vertical-align:top;color:#3b3225;}
+    .fmt-table td:first-child{white-space:nowrap;padding-right:.9rem;width:1%;}
+    .fmt-table code{background:#f4e9db;color:#a5551b;padding:.1rem .4rem;border-radius:.35rem;font-size:.72rem;border:1px solid #e3cf9e;}
+    .modal-note{font-size:.72rem;color:#6a5a3e;line-height:1.6;}
+    .modal-note code{background:#f4e9db;color:#a5551b;padding:.05rem .35rem;border-radius:.35rem;border:1px solid #e3cf9e;}
+    .modal-note .tag-chip{position:relative;top:-1px;}
     @media(max-width:600px){
       .retro-header h1{font-size:1rem;}
       .content{padding:1rem;}
@@ -155,6 +175,7 @@
     <h1>CLASSIC REMINDER</h1>
     <div class="header-right">
       <code>SPACE = NEXT FIELD</code>
+      <button class="icon-btn" id="helpBtn" title="Format help">?</button>
       <button class="icon-btn" id="soundBtn" title="Toggle sound">🔔</button>
     </div>
   </div>
@@ -238,6 +259,76 @@
     </div>
   </div>
   <footer>positional parser &middot; space = delimiter &middot; output YYYY-MM-DD &middot; local timezone &middot; saved automatically</footer>
+</div>
+
+<div class="modal-overlay" id="helpOverlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>FORMAT REFERENCE</h2>
+      <button class="icon-btn" id="helpCloseBtn" title="Close">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="modal-section">
+        <h3>1 · DATE <span class="modal-order">(1st token)</span></h3>
+        <table class="fmt-table">
+          <tr><td><code>18</code></td><td>Day only — next occurrence of the 18th (this month, or next if already passed)</td></tr>
+          <tr><td><code>1807</code></td><td>DDMM — 18th July, this year (or next year if already passed)</td></tr>
+          <tr><td><code>180726</code></td><td>DDMMYY — 18th July 2026</td></tr>
+          <tr><td><code>18/07</code> or <code>18-07</code> or <code>18.07</code></td><td>DD/MM, current or next year</td></tr>
+          <tr><td><code>18/07/2026</code></td><td>DD/MM/YYYY, full date</td></tr>
+          <tr><td><code>18jul</code> or <code>18-jul-2026</code></td><td>Day + 3-letter month, with optional year</td></tr>
+          <tr><td><code>today</code> / <code>tomorrow</code></td><td>Relative day keywords</td></tr>
+          <tr><td><code>monday</code> … <code>sunday</code></td><td>Next occurrence of that weekday</td></tr>
+        </table>
+      </div>
+
+      <div class="modal-section">
+        <h3>2 · TIME <span class="modal-order">(2nd token)</span></h3>
+        <table class="fmt-table">
+          <tr><td><code>10</code></td><td>Hour only, 24h clock (10 → 10:00)</td></tr>
+          <tr><td><code>1030</code></td><td>HHMM, 24h clock</td></tr>
+          <tr><td><code>10:30</code></td><td>H:MM, 24h clock</td></tr>
+          <tr><td><code>10pm</code> / <code>1030am</code></td><td>12h clock with am/pm suffix (space before am/pm is OK too)</td></tr>
+          <tr><td><code>noon</code> / <code>midnight</code></td><td>Keyword shortcuts</td></tr>
+        </table>
+      </div>
+
+      <div class="modal-section">
+        <h3>⚡ RELATIVE SHORTCUT <span class="modal-order">(replaces DATE + TIME, 1 token)</span></h3>
+        <table class="fmt-table">
+          <tr><td><code>+30m</code></td><td>30 minutes from now</td></tr>
+          <tr><td><code>+2h</code></td><td>2 hours from now</td></tr>
+          <tr><td><code>+1d</code></td><td>1 day from now, same time</td></tr>
+          <tr><td><code>+1w</code></td><td>1 week from now, same time</td></tr>
+        </table>
+        <p class="modal-note">When used, the TIME field is filled automatically — the very next token starts your message.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>3 · MESSAGE <span class="modal-order">(3rd token onward)</span></h3>
+        <p class="modal-note">Everything after date + time is the message. Add <code>#tag</code> anywhere in it to tag the reminder — tags become clickable filters in the list below.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>REPEAT</h3>
+        <p class="modal-note">Once date + time are valid, choose <b>Once / Daily / Weekly / Monthly</b> below the input. Recurring reminders reschedule themselves automatically each time they fire instead of disappearing.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>OTHER CONTROLS</h3>
+        <table class="fmt-table">
+          <tr><td><code>Enter</code></td><td>Schedule the current reminder</td></tr>
+          <tr><td><code>Esc</code></td><td>Clear the input</td></tr>
+          <tr><td>Click a reminder</td><td>Load it back into the input to edit</td></tr>
+          <tr><td>Click a <span class="tag-chip">#tag</span></td><td>Filter the list to that tag</td></tr>
+          <tr><td>🔔 / 🔕</td><td>Toggle the chime sound played when a reminder fires</td></tr>
+          <tr><td>EXPORT .ICS</td><td>Download all reminders as a calendar file</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <div class="toast-box" id="toastBox"></div>
@@ -687,6 +778,15 @@
     }catch(e){}
   }
   soundBtn.addEventListener('click',()=>{muted=!muted;applyMutedUI();saveSettings();setStatus(muted?'Sound muted.':'Sound on.');});
+
+  // === HELP MODAL ===
+  const helpBtn=$('helpBtn'),helpOverlay=$('helpOverlay'),helpCloseBtn=$('helpCloseBtn');
+  function openHelp(){helpOverlay.classList.add('open');}
+  function closeHelp(){helpOverlay.classList.remove('open');}
+  helpBtn.addEventListener('click',openHelp);
+  helpCloseBtn.addEventListener('click',closeHelp);
+  helpOverlay.addEventListener('click',e=>{if(e.target===helpOverlay)closeHelp();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&helpOverlay.classList.contains('open'))closeHelp();});
   function applyMutedUI(){soundBtn.textContent=muted?'🔕':'🔔';soundBtn.classList.toggle('muted',muted);}
 
   let stTimer=null;
